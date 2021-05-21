@@ -1,0 +1,28 @@
+ion-content {
+  ion-item {
+    --min-height: 120px;
+    --height: 120px;
+    --padding-bottom: 10px;
+
+    h2 {
+      color: var(--ion-color-warning);
+      margin-top: 5px;
+    }
+    p {
+      margin: 5px;
+    }
+
+    .price {
+      margin-top: -3px;
+      position: relative;
+      top: 4px;
+    }
+
+    .custom-badge {
+      display: inline;
+      font-size: 14px;
+      padding: 3px;
+      font-weight: 500;
+    }
+  }
+}

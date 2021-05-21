@@ -1,0 +1,21 @@
+<ion-header mode="md">
+  <ion-toolbar mode="md" color="dark">
+    <ion-buttons slot="start">
+      <ion-back-button mode="md" defaultHref="home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>
+      <label>Notificaciones</label>
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+<ion-list>
+  <ion-item *ngFor="let item of notifications" lines="full">
+    <ion-text>
+      <h2>{{item.title}} <span>{{item.createdAt.toDate() | date}}</span></h2>
+      <p [innerHTML]="item.body"></p>
+    </ion-text>
+  </ion-item>
+</ion-list>
+</ion-content>

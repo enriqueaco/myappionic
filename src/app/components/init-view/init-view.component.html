@@ -1,0 +1,33 @@
+<div class="ion-page">
+  <ion-content class="ion-padding">
+
+    <ion-img src="assets/logo-orange.svg"></ion-img>
+    <ion-item lines="none" class="ion-text-center">
+      <ion-text color="dark">
+        <h1>Música Litúrgica Online</h1>
+      </ion-text>
+    </ion-item>
+    <ion-item lines="none" class="ion-text-center">
+      <div class="center-button">
+        <ion-button color="warning" shape="round" (click)="start()">
+          ¡Empecemos!
+        </ion-button>
+      </div>
+    </ion-item>
+  </ion-content>
+
+  <ion-footer>
+    <ion-toolbar mode="md">
+      <ion-buttons>
+        <ion-button [routerLink]="['/register']" expand="full" fill="clear" color="dark">
+          <ion-icon  slot="start"  name="person-circle-outline"></ion-icon>
+          <strong>Registrarse</strong>
+        </ion-button>
+        <ion-button [routerLink]="['/login']" expand="full" fill="clear" color="dark">
+          <ion-icon slot="start" name="log-in-outline"></ion-icon>
+          <strong>Autenticarse</strong>
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-footer>
+</div>

@@ -1,0 +1,140 @@
+<ion-header mode="md" *ngIf="api.firstInit" [translucent]="true">
+  <ion-toolbar mode="md">
+    <ion-buttons slot="end">
+      <ion-menu-button size="small" autoHide="false" class="toggle"></ion-menu-button>
+    </ion-buttons>
+    <ion-title class="ion-text-center">
+      <img src="assets/logo-orange.svg" width="auto" alt="No Image" class="logo-header" />
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content *ngIf="api.firstInit" [fullscreen]="true" class="ion-padding ion-text-center">
+  <ion-button *ngIf="currentUser && !currentUser.isEmailVerified" [routerLink]="['/confirm-email']" fill="clear" color="light" style="padding: 0;">
+    <ion-text color="danger">
+      <p><u>Por favor, verifique su cuenta de correo</u></p>
+    </ion-text>
+  </ion-button>
+  <ion-button *ngIf="settings[SETTINGS_TYPES.isActiveNews]" (click)="openPlaylist(LIST_TYPES.news)" expand="full" shape="round" color="medium" class="ion-text-center">
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <ion-label color="warning">Novedades</ion-label>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <span class="amount-songs" *ngIf="amounts[LIST_TYPES.news]">{{_.get(amounts, LIST_TYPES.news + '.amount', 0)}}
+            canciones</span>
+          <span class="amount-songs" *ngIf="!amounts[LIST_TYPES.news]"><ion-skeleton-text animated></ion-skeleton-text></span>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-button>
+  <ion-button (click)="openPlaylist(LIST_TYPES.liturgical)" expand="full" shape="round" color="warning" class="ion-text-center">
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <ion-label style="font-size: 17px;">Todos los Cantos Litúrgicos</ion-label>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <span class="amount-songs" *ngIf="!(amounts[LIST_TYPES.liturgical])"><ion-skeleton-text animated></ion-skeleton-text></span>
+          <span class="amount-songs"
+            *ngIf="amounts[LIST_TYPES.liturgical]">{{_.get(amounts,LIST_TYPES.liturgical + '.amount', 0)}}
+            canciones</span>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-button>
+  <ion-button (click)="openLists([LIST_TYPES.mpr])" expand="full" shape="round" color="warning" class="ion-text-center">
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <ion-label>Popular Religiosa</ion-label>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <span class="amount-songs" *ngIf="!(amounts[LIST_TYPES.mpr])"><ion-skeleton-text animated></ion-skeleton-text></span>
+          <span class="amount-songs" *ngIf="amounts[LIST_TYPES.mpr]">{{_.get(amounts,LIST_TYPES.mpr + '.amount', 0)}}
+            canciones</span>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-button>
+  <ion-button (click)="openLists([LIST_TYPES.organ])" expand="full" shape="round" color="warning" class="ion-text-center">
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <ion-label>Órgano</ion-label>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <span class="amount-songs" *ngIf="!(amounts[LIST_TYPES.organ])"><ion-skeleton-text animated></ion-skeleton-text></span>
+          <span class="amount-songs" *ngIf="amounts[LIST_TYPES.organ]">{{_.get(amounts,LIST_TYPES.organ + '.amount', 0)}}
+            canciones</span>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-button>
+  <ion-button *ngIf="currentUser" [routerLink]="['/own-lists']" expand="full" shape="round" color="warning" class="ion-text-center">
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <ion-label>Mis Listas</ion-label>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <span class="amount-songs" *ngIf="ownListSongsAmount === null"><ion-skeleton-text animated></ion-skeleton-text></span>
+          <span *ngIf="ownListSongsAmount !== null" class="amount-songs">{{ownListSongsAmount}} canciones</span>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-button>
+  <ion-button *ngIf="isPremiumPlan" (click)="openLists([LIST_TYPES.bonus])" expand="full" shape="round" color="warning" class="ion-text-center">
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <ion-label>Bonus</ion-label>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <span class="amount-songs" *ngIf="!(amounts[LIST_TYPES.bonus])"><ion-skeleton-text animated></ion-skeleton-text></span>
+          <span class="amount-songs" *ngIf="amounts[LIST_TYPES.bonus]">{{_.get(amounts,LIST_TYPES.bonus + '.amount', 0)}}
+            canciones</span>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-button>
+  <ion-button *ngIf="settings[SETTINGS_TYPES.isActiveRecommended]" (click)="openPlaylist(LIST_TYPES.recommended)" expand="full" shape="round" color="warning" class="ion-text-center">
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <ion-label>Recomendadas</ion-label>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <span class="amount-songs" *ngIf="!(amounts[LIST_TYPES.recommended])"><ion-skeleton-text animated></ion-skeleton-text></span>
+          <span class="amount-songs"
+            *ngIf="amounts[LIST_TYPES.recommended]">{{_.get(amounts,LIST_TYPES.recommended + '.amount', 0)}} canciones</span>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-button>
+</ion-content>
+<ion-footer *ngIf="api.firstInit">
+  <ion-toolbar mode="md">
+    <ion-button [routerLink]="['/notifications']" expand="full" fill="clear" color="dark">
+      <ion-icon slot="start" name="notifications-outline"></ion-icon>
+      <ion-label><strong>Notificaciones</strong></ion-label>
+      <ion-badge style="margin-left: 5px;" mode="ios" slot="end" color="danger" *ngIf="notificationCount !== 0">{{notificationCount}}</ion-badge>
+    </ion-button>
+  </ion-toolbar>
+</ion-footer>
+
+<app-init-view *ngIf="!api.firstInit" (changeStart)="changeInit($event)"></app-init-view>

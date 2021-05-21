@@ -1,0 +1,30 @@
+<ion-header mode="md">
+  <ion-toolbar mode="md" color="dark">
+    <ion-buttons slot="start">
+      <ion-back-button icon="close" mode="md" defaultHref="home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>
+      <label>{{selectedAmount}}</label>
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="addSongsToOwnList()">
+        <ion-icon name="checkmark"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item lines="full" *ngFor="let item of songs">
+      <ion-checkbox (ionChange)="onSelectionChange()" slot="start" [(ngModel)]="item.checked"></ion-checkbox>
+      <ion-avatar slot="start" [ngStyle]="{'background-color':'#' + item.song.iconBackground}">
+        <img [src]="URL_BASE + item.song.icon">
+      </ion-avatar>
+      <ion-label>
+        <h3>{{item.song.fullname}}</h3>
+        <p>{{item.song.author}}</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>

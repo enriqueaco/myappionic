@@ -1,0 +1,5 @@
+<ion-content>
+  <ion-item>
+    <ion-range [value]="player.volume() * 100" debounce="500" (ionChange)="changeVolume($event)" mode="ios" color="warning"></ion-range>
+  </ion-item>
+</ion-content>

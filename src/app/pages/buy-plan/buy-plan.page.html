@@ -1,0 +1,96 @@
+<ion-header mode="md">
+  <ion-toolbar mode="md" color="dark">
+    <ion-buttons slot="start" *ngIf="!expired">
+      <ion-back-button mode="md" color="light" defaultHref="plan"></ion-back-button>
+    </ion-buttons>
+    <ion-title>
+      <ion-label color="light">Comprar</ion-label>
+    </ion-title>
+    <ion-buttons slot="end" *ngIf="!expired">
+      <ion-button [routerLink]="['/notifications']" class="notification-icon-button">
+        <ion-icon color="light" name="notifications"></ion-icon>
+        <ion-badge *ngIf="notificationsCount !== 0" class="notification-badge" color="danger">
+          <span>{{notificationsCount}}</span>
+        </ion-badge>
+      </ion-button>
+      <ion-menu-button color="light" size="small" autoHide="false" class="toggle"></ion-menu-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-radio-group [(ngModel)]="selectedPlan" class="ion-padding-vertical" (ionChange)="planChange($event)">
+    <ion-list-header>
+      <ion-label color="primary">Tipo de plan</ion-label>
+    </ion-list-header>
+
+    <ion-item lines="none" *ngFor="let item of plans">
+      <ion-label>{{item.name}}</ion-label>
+      <ion-radio slot="start" [value]="item"></ion-radio>
+    </ion-item>
+    <ion-item lines="full" style="--min-height: 10px;">
+    </ion-item>
+  </ion-radio-group>
+  <ion-radio-group [(ngModel)]="frequency" (ionChange)="getPrice()" class="ion-padding-vertical">
+    <ion-list-header>
+      <ion-label color="primary">Frecuencia</ion-label>
+    </ion-list-header>
+
+    <ion-item lines="none">
+      <ion-label>Trimestral</ion-label>
+      <ion-badge color="light" *ngIf="costs.quarterly > 0" slot="end">${{costs.quarterly.toFixed(2)}}</ion-badge>
+      <ion-radio slot="start" [value]="3"></ion-radio>
+    </ion-item>
+    <ion-item lines="none">
+      <ion-label>Semestral</ion-label>
+      <ion-badge color="light" *ngIf="costs.biannual > 0" slot="end">${{costs.biannual.toFixed(2)}}</ion-badge>
+      <ion-radio slot="start" [value]="6"></ion-radio>
+    </ion-item>
+    <ion-item lines="full" style="--padding-bottom: 10px;">
+      <ion-label>Anual</ion-label>
+      <ion-badge color="light" *ngIf="costs.annual > 0" slot="end">${{costs.annual.toFixed(2)}}</ion-badge>
+      <ion-radio slot="start" [value]="12"></ion-radio>
+    </ion-item>
+  </ion-radio-group>
+  <ion-item lines="full">
+    <ion-label color="primary" position="fixed" style="display: contents;font-weight: 600;">Código promocional:
+    </ion-label>
+    <ion-input [disabled]="autoPay" inputmode="text" (ionChange)="codeChange($event)" placeholder="código"
+      minlength="10" maxlength="10" [(ngModel)]="code"></ion-input>
+    <ion-badge color="danger" *ngIf="selectedPromo && !isInvalidCode && !autoPay" slot="end">-{{selectedPromo.percent}}%
+    </ion-badge>
+  </ion-item>
+  <ion-item lines="none">
+    <div class="center-button">
+      <ion-checkbox slot="start" [(ngModel)]="acceptTerms"></ion-checkbox>
+      <ion-label>
+        Acepto los <a (click)="presentTermsAndConditions()">Términos y Condiciones.</a>
+      </ion-label>
+    </div>
+  </ion-item>
+  <ion-item style="margin-top: -15px;" lines="none">
+    <div class="center-button">
+      <ion-checkbox (ionChange)="onAutoPay($event)" slot="start" [(ngModel)]="autoPay"></ion-checkbox>
+      <ion-label>
+        Autorrenovable
+      </ion-label>
+    </div>
+  </ion-item>
+  <ion-item lines="none" class="ion-text-center">
+    <ion-label>
+      <h2 style="text-align: center;font-size: 20px;" *ngIf="totalAmount && !isInvalidCode">Total a pagar: <span
+          style="color: var(--ion-color-dark);">${{this.totalAmount}}</span></h2>
+      <p style="color: var(--ion-color-danger);" *ngIf="isInvalidCode">El código promocional entrado no es válido.</p>
+    </ion-label>
+  </ion-item>
+  <ion-item lines="none" style="padding: 10px;">
+    <div class="center-button">
+      <div id="paypal-button"></div>
+    </div>
+  </ion-item>
+  <ion-item *ngIf="expired" lines="none" class="ion-padding-top">
+    <ion-text color="danger">
+      Su tiempo de prueba o su pago han expirado. Puede que se haya registrado y aún no haya pagado. Debe comprar un plan para disfrutar CantoApp.
+    </ion-text>
+  </ion-item>
+</ion-content>

@@ -1,0 +1,64 @@
+<ion-header mode="md">
+  <ion-toolbar mode="md" color="dark">
+    <ion-buttons slot="start">
+      <ion-back-button mode="md" defaultHref="home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>
+      <label>{{title}}</label>
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button [routerLink]="['/notifications']" class="notification-icon-button">
+        <ion-icon color="light" name="notifications"></ion-icon>
+        <ion-badge *ngIf="notificationsCount !== 0" class="notification-badge" color="danger">
+          <span>{{notificationsCount}}</span>
+        </ion-badge>
+      </ion-button>
+      <ion-menu-button size="small" autoHide="false" class="toggle"></ion-menu-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list *ngIf="lists && lists.length > 0">
+    <ion-grid>
+      <ion-row *ngFor="let rows of getRows(lists)">
+        <ion-col size="6" *ngFor="let item of rows">
+          <ion-card *ngIf="item" (click)="openPlaylist(item)">
+            <ion-button [disabled]="!item.description" (click)="presentListDescription(item.description)"
+              class="info-list" fill="clear">
+              <ion-icon slot="icon-only" color="light" name="information-circle"></ion-icon>
+            </ion-button>
+            <div class="image-container" [ngStyle]="{'background-color':'#' + item.iconBackground}">
+              <img [src]="URL_BASE + item.icon" />
+            </div>
+            <ion-card-content>
+              <ion-item lines="none">
+                <ion-label>{{item.totalSongs}} canciones</ion-label>
+                <!-- <ion-button (click)="openPlaylist(item)" [disabled]="item.totalSongs === 0" fill="clear"
+                  slot="end">
+                  <ion-icon size="large" color="warning" name="play-circle"></ion-icon>
+                </ion-button> -->
+              </ion-item>
+              <!-- <ion-card-title>Misa de Bodas</ion-card-title> -->
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+  </ion-list>
+</ion-content>
+<ion-footer>
+  <ion-toolbar mode="md">
+    <ion-buttons>
+      <ion-button [disabled]="!description" (click)="presentDescription()" expand="full" fill="clear" color="dark">
+        <ion-icon slot="start" name="information-circle"></ion-icon>
+        <strong>Información</strong>
+      </ion-button>
+      <ion-button [routerLink]="['/search']" expand="full" fill="clear" color="dark">
+        <ion-icon slot="start" name="search"></ion-icon>
+        <strong>Búsqueda</strong>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>

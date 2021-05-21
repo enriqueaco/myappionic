@@ -1,0 +1,32 @@
+<ion-content>
+  <ion-item lines="none">
+    <ion-text style="width: 100%;">
+      <h2>Cancelar Suscripción</h2>
+      <p style="margin-bottom: 0;">
+        <b>
+          ¿Usted está seguro de cancelar su subscripción autorrenovable al plan?
+        </b>
+      </p>
+    </ion-text>
+  </ion-item>
+  <ion-item lines="none" class="ion-padding-top">
+    <ion-checkbox slot="start" [(ngModel)]="isAgree"></ion-checkbox>
+    <ion-text>Entiendo que si deseo hacer alguna reclamación, debo contactar directamente a CantoApp.</ion-text>
+  </ion-item>
+  <!-- <ion-item lines="none">
+    <ion-checkbox slot="start" [(ngModel)]="acceptTerm"></ion-checkbox>
+    <ion-text>Yo acepto los términos y condiciones de cancelación</ion-text>
+  </ion-item> -->
+  <ion-item lines="none" style="margin: 10px 0;">
+    <div class="center-button">
+      <ion-buttons>
+        <ion-button (click)="cancel()" class="clear-button" color="primary" shape="round">
+          Volver
+        </ion-button>
+        <ion-button [disabled]="!(isAgree)" (click)="cancelSubscription()" class="clear-button" fill="solid" color="primary" shape="round">
+          Aceptar
+        </ion-button>
+      </ion-buttons>
+    </div>
+  </ion-item>
+</ion-content>

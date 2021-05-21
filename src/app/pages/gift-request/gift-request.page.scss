@@ -1,0 +1,31 @@
+ion-content {
+  --padding-top: 32px;
+
+  h2 {
+    text-align: center;
+    font-size: 20px;
+  }
+
+  ion-item {
+    margin-bottom: 15px;
+
+    ion-label {
+      text-align: center;
+    }
+
+    &.item-has-focus,
+    &.item-has-value {
+      ion-label {
+        text-align: left;
+      }
+    }
+
+    ion-button {
+      --padding-start: 40px;
+      --padding-end: 40px;
+      --padding-bottom: 10px;
+      --padding-top: 10px;
+      height: auto;
+    }
+  }
+}

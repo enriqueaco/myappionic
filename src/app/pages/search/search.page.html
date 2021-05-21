@@ -1,0 +1,42 @@
+<ion-header mode="md">
+  <ion-toolbar mode="md" color="dark">
+    <ion-buttons slot="start">
+      <ion-back-button mode="md" defaultHref="list"></ion-back-button>
+    </ion-buttons>
+    <ion-searchbar [(ngModel)]="criteria" (ionClear)="onSearch()" (search)="onSearch()" placeholder="Buscar..."
+      showCancelButton="always" color="dark"></ion-searchbar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list *ngIf="haveSongs  && songs.length > 0" class="playlist">
+    <ion-item lines="full" *ngFor="let item of songs">
+      <ion-avatar slot="start" [ngStyle]="{'background-color':'#' + item.iconBackground}">
+        <img [src]="URL_BASE + item.icon">
+      </ion-avatar>
+      <ion-label>
+        <h3>{{item.fullname}}</h3>
+        <p>{{item.author}}</p>
+      </ion-label>
+      <ion-buttons slot="end">
+
+        <ion-text slot="end">{{parseTime(item.duration)}}</ion-text>
+        <ion-button size="large" slot="end" [disabled]="item.isFree && !currentUser" (click)="preloadSong(item)" fill="clear" style="margin-right: 12px;">
+         <!-- <ion-button size="large" slot="end" fill="clear" style="margin-right: -12px;">-->
+          <!-- <ion-icon color="warning" name="download-outline"></ion-icon>-->
+          <ion-icon [color]="preloadList[item._id] ? 'primary' : 'dark'" name="download-outline"></ion-icon>
+        </ion-button>
+        <!--<ion-button size="large" slot="end" fill="clear" (click)="presentPopover($event, item)">
+          <ion-icon color="dark" name="ellipsis-vertical"></ion-icon>
+        </ion-button>-->
+      </ion-buttons>
+    </ion-item>
+  </ion-list>
+  <ion-text *ngIf="!haveSongs">
+    No se ha encontrado ninguna canción.
+  </ion-text>
+  <!-- <ion-text *ngIf="haveSongs && songs.length === 0">
+    No hay ninguna canción
+  </ion-text> -->
+
+</ion-content>

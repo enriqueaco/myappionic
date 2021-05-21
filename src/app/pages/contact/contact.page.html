@@ -1,0 +1,64 @@
+<ion-header mode="md">
+  <ion-toolbar mode="md" color="dark">
+    <ion-buttons slot="start">
+      <ion-back-button mode="md" defaultHref="home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>
+      <label>Contacto</label>
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <form [formGroup]="contactForm" (ngSubmit)="sendEmail()">
+    <ion-item>
+      <ion-label position="floating">Nombre Completo</ion-label>
+      <ion-input [disabled]="currentUser" inputmode="text" maxlength="100" formControlName="fullname" required></ion-input>
+    </ion-item>
+    <div class="validation-errors">
+      <ng-container *ngFor="let validation of validationMessages.fullname">
+        <div class="error-message"
+          *ngIf="contactForm.get('fullname').hasError(validation.type) && (contactForm.get('fullname').dirty || contactForm.get('fullname').touched)">
+          <ion-icon size="small" name="information-circle-outline"></ion-icon>
+          <p>{{ validation.message }}</p>
+        </div>
+      </ng-container>
+    </div>
+    <ion-item>
+      <ion-label position="floating">Correo</ion-label>
+      <ion-input [disabled]="currentUser" inputmode="text" type="email" formControlName="email" required></ion-input>
+    </ion-item>
+    <div class="validation-errors">
+      <ng-container *ngFor="let validation of validationMessages.email">
+        <div class="error-message"
+          *ngIf="contactForm.get('email').hasError(validation.type) && (contactForm.get('email').dirty || contactForm.get('email').touched)">
+          <ion-icon size="small" name="information-circle-outline">
+            </ion-icon>
+            <p>{{ validation.message }}</p>
+        </div>
+      </ng-container>
+    </div>
+    <ion-item>
+      <ion-label position="floating">Mensaje</ion-label>
+      <ion-textarea rows="10" inputmode="text" type="text" formControlName="message" required="true"></ion-textarea>
+    </ion-item>
+    <div class="validation-errors">
+      <ng-container *ngFor="let validation of validationMessages.message">
+        <div class="error-message" *ngIf="contactForm.get('message').hasError(validation.type) 
+        && (contactForm.get('message').dirty || contactForm.get('message').touched)">
+          <ion-icon size="small" name="information-circle-outline">
+            </ion-icon>
+            <p>{{ validation.message }}</p>
+        </div>
+      </ng-container>
+    </div>
+    <ion-item lines="none" class="ion-padding-top">
+      <div class="center-button">
+        <ion-button [disabled]="contactForm.invalid" type="submit" color="primary" shape="round">
+          Enviar
+        </ion-button>
+      </div>
+    </ion-item>
+  </form>
+
+</ion-content>

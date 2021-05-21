@@ -1,0 +1,19 @@
+.email-image {
+  margin: 40px auto;
+  width: 250px;
+}
+
+ion-item {
+
+  &.message-bubble {
+    max-width: 250px;
+    margin: auto;
+    font-size: 15px;
+    border-radius: 10px;
+    --border-radius:  10px;
+  
+    ion-text {
+      padding: 8px;
+    }
+  }
+}

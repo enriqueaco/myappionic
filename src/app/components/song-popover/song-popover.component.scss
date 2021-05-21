@@ -1,0 +1,9 @@
+ion-content {
+  background-color: var(--ion-color-warning);
+  --background: var(--ion-color-warning);
+
+  ion-list {
+    background-color: transparent;
+    --background: transparent;
+  }
+}

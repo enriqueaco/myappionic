@@ -1,0 +1,49 @@
+<ion-header mode="md">
+  <ion-toolbar mode="md" color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button mode="md" defaultHref="home"></ion-back-button>
+    </ion-buttons>
+    <ion-title class="ion-text-center">
+      <img src="assets/logo.svg" width="auto" alt="No Image" class="logo-header-left" />
+    </ion-title>
+  </ion-toolbar>
+  <ion-toolbar mode="md" color="primary" class="ion-padding-top">
+    <ion-img src="assets/login.svg" style="height: 180px;"></ion-img>
+    <ion-item lines="none" color="primary" class="ion-text-center ion-padding-top">
+      <ion-label class="ion-text-center">
+        <h1>¡Entre ahora!</h1>
+      </ion-label>
+    </ion-item>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <form [formGroup]="loginForm">
+    <ion-item>
+      <ion-label position="floating">Correo</ion-label>
+      <ion-input inputmode="text" type="email" formControlName="email" required></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Contraseña</ion-label>
+      <ion-input #passwordEyeRegister  [type]="passwordTypeInput" inputmode="text" maxlength="20" minlength="8" type="password" formControlName="password" required>
+      </ion-input>
+      <button  item-end  class="btn_eye_icon"  (click)="togglePasswordMode()">
+        <ion-icon  [name]="iconPassword"></ion-icon>
+    </button>
+    </ion-item>
+    <ion-item lines="none" class="ion-padding-top">
+      <div class="center-button">
+        <ion-button [disabled]="loginForm.invalid" (click)="login()" color="primary" shape="round">
+          Iniciar
+        </ion-button>
+      </div>
+    </ion-item>
+    <ion-item lines="none">
+      <ion-label>
+        <p (click)="goTo('/forgot-password')">¿Olvidó su contraseña?</p>
+        <p (click)="goTo('/register')">Registrarse</p>
+      </ion-label>
+    </ion-item>
+  </form>
+
+</ion-content>

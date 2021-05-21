@@ -1,0 +1,193 @@
+<ion-header mode="md">
+  <ion-toolbar mode="md" color="dark">
+    <ion-buttons slot="start" *ngIf="!expired">
+      <ion-back-button mode="md" color="light" defaultHref="plan"></ion-back-button>
+    </ion-buttons>
+    <ion-title>
+      <ion-label color="light">Mejorar Plan</ion-label>
+    </ion-title>
+    <ion-buttons slot="end" *ngIf="!expired">
+      <ion-button [routerLink]="['/notifications']" class="notification-icon-button">
+        <ion-icon color="light" name="notifications"></ion-icon>
+        <ion-badge *ngIf="notificationsCount !== 0" class="notification-badge" color="danger">
+          <span>{{notificationsCount}}</span>
+        </ion-badge>
+      </ion-button>
+      <ion-menu-button color="light" size="small" autoHide="false" class="toggle"></ion-menu-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item lines="full" class="item-card">
+    <ion-text>
+      <h2>Mi Plan</h2>
+      <div *ngIf="currentUser">
+        <p>
+          Pagado:
+          <ion-badge class="custom-badge" color="medium" *ngIf="currentUser.lastPayment" slot="end">
+            {{currentUser.plan.name}} - ${{parsePrice(currentUser.lastPayment.amount)}}
+          </ion-badge>
+          <ion-badge *ngIf="currentUser.lastPayment && currentUser.lastPayment.isUpgrade" style="margin-left: 3px;"
+            class="custom-badge" color="primary" slot="end">
+            Mejorado
+          </ion-badge>
+        </p>
+        <p *ngIf="currentUser.lastPayment && currentUser.lastPayment.promoCode">
+          Descuento:
+          <ion-badge style="display: inline;font-size: 12px;padding: 3px;" color="danger"
+            *ngIf="currentUser.lastPayment.promoCode" slot="end">
+            {{currentUser.lastPayment.promoCode.percent}}%
+          </ion-badge>
+        </p>
+        <p *ngIf="currentUser.lastPayment && !currentUser.lastPayment.autoPay">
+          Desde {{currentUser.lastPayment.createdAt | date: "dd/MM/y" }} -
+          {{currentUser.lastPayment.expirationDate | date: "dd/MM/y" }}
+        </p>
+        <p *ngIf="currentUser.lastPayment && currentUser.lastPayment.autoPay">
+          Próximo Pago: {{currentUser.lastPayment.expirationDate | date: "dd/MM/y" }}
+        </p>
+        <p *ngIf="currentUser.lastPayment && currentUser.lastPayment.autoPay">
+          <ion-badge style="margin-left: 3px;" class="custom-badge" color="primary" slot="end">
+            Autorrenovable
+          </ion-badge>
+          <ion-button (click)="cancelSubscriptionActive()" size="small" fill="clear" class="cancel-button">
+            <ion-icon name="close-circle-outline"></ion-icon>
+          </ion-button>
+        </p>
+      </div>
+    </ion-text>
+  </ion-item>
+
+  <!-- autorenovar start -->
+  <ion-item *ngIf="(currentUser && currentUser.lastPayment && !currentUser.lastPayment.autoPay) && !pack" lines="none">
+    <ion-text>
+      <h2>Autorenovar mi plan</h2>
+    </ion-text>
+  </ion-item>
+  <ion-item *ngIf="(currentUser && currentUser.lastPayment && !currentUser.lastPayment.autoPay) && !pack"
+    style="margin-top: -15px;" [lines]="autoPay ? 'none': 'full'">
+    <ion-checkbox (ionChange)="onAutoPay($event)" slot="start" [(ngModel)]="autoPay"></ion-checkbox>
+    <ion-label>
+      Autorrenovable
+    </ion-label>
+  </ion-item>
+  <ion-item lines="none"
+    *ngIf="(currentUser && currentUser.lastPayment && !currentUser.lastPayment.autoPay) && (!pack && autoPay)"
+    class="ion-padding-top">
+    <div class="center-button">
+      <ion-checkbox slot="start" [(ngModel)]="acceptTerms"></ion-checkbox>
+      <ion-label>
+        Acepto los <a (click)="presentTermsAndConditions()">Términos y Condiciones.</a>
+      </ion-label>
+    </div>
+  </ion-item>
+  <ion-item *ngIf="(currentUser && currentUser.lastPayment && !currentUser.lastPayment.autoPay) && (!pack && autoPay)"
+    lines="none" class="ion-text-center ion-padding-bottom">
+    <ion-label>
+      <h2 style="text-align: center;font-size: 20px;">Próximo pago: <span
+          style="color: var(--ion-color-dark);">${{getOriginalPrice()}} - {{currentUser.lastPayment.expirationDate |
+          date: "dd/MM/y" }}</span></h2>
+    </ion-label>
+  </ion-item>
+  <!-- autorenovar end -->
+
+  <div
+    *ngIf="!autoPay && currentUser && (currentUser.lastPayment.frequency < 12 || currentUser.lastPayment.plan.type === PLAN_TYPES.basic)">
+    <ion-radio-group [(ngModel)]="pack" (ionChange)="onChangePrice()" class="ion-padding-vertical">
+      <ion-list-header>
+        <ion-label color="primary">Mejorar mi plan</ion-label>
+      </ion-list-header>
+
+      <ion-item lines="none" *ngIf="costs.basic6.plan">
+        <ion-label>Basic + 3 meses <span style="font-size: 13px;">(Hasta
+            {{costs.basic6.expirationDate | date: "dd/MM/y"}})</span></ion-label>
+        <ion-radio slot="start" value="basic6"></ion-radio>
+        <ion-badge style="margin-left: 5px;" slot="end" color="dark">
+          ${{costs.basic6.price}}
+        </ion-badge>
+      </ion-item>
+      <ion-item lines="none" *ngIf="costs.basic12.plan">
+        <ion-label>Basic + {{costs.basic12.months}} meses <span style="font-size: 13px;">(Hasta
+            {{costs.basic12.expirationDate | date: "dd/MM/y"}})</span></ion-label>
+        <ion-radio slot="start" value="basic12"></ion-radio>
+        <ion-badge style="margin-left: 5px;" slot="end" color="dark">
+          ${{costs.basic12.price}}
+        </ion-badge>
+      </ion-item>
+      <ion-item lines="none" *ngIf="costs.premium.plan">
+        <ion-label>Premium <span style="font-size: 13px;">(Hasta
+            {{costs.premium.expirationDate | date: "dd/MM/y"}})</span></ion-label>
+        <ion-radio slot="start" value="premium"></ion-radio>
+        <ion-badge style="margin-left: 5px;" slot="end" color="dark">
+          ${{costs.premium.price}}
+        </ion-badge>
+      </ion-item>
+      <ion-item lines="none" *ngIf="costs.premium6.plan">
+        <ion-label>Premium + 3 meses <span style="font-size: 13px;">(Hasta
+            {{costs.premium6.expirationDate | date: "dd/MM/y"}})</span></ion-label>
+        <ion-radio slot="start" value="premium6"></ion-radio>
+        <ion-badge style="margin-left: 5px;" slot="end" color="dark">
+          ${{costs.premium6.price}}
+        </ion-badge>
+      </ion-item>
+      <ion-item lines="none" *ngIf="costs.premium12.plan">
+        <ion-label>Premium + {{costs.premium12.months}} meses <span style="font-size: 13px;">(Hasta
+            {{costs.premium12.expirationDate | date: "dd/MM/y"}})</span></ion-label>
+        <ion-radio slot="start" value="premium12"></ion-radio>
+        <ion-badge style="margin-left: 5px;" slot="end" color="dark">
+          ${{costs.premium12.price}}
+        </ion-badge>
+      </ion-item>
+    </ion-radio-group>
+    <ion-item lines="none" *ngIf="pack">
+      <ion-label color="primary" position="fixed" style="display: contents;font-weight: 600;">Código promocional:
+      </ion-label>
+      <ion-input inputmode="text" (ionChange)="codeChange($event)" placeholder="código" minlength="10" maxlength="10"
+        [(ngModel)]="code"></ion-input>
+      <ion-badge style="margin-left: 5px;" color="danger" *ngIf="selectedPromo && !isInvalidCode" slot="end">
+        -{{selectedPromo.percent}}%</ion-badge>
+    </ion-item>
+    <ion-item lines="none" *ngIf="pack">
+      <div class="center-button">
+        <ion-checkbox slot="start" [(ngModel)]="acceptTerms"></ion-checkbox>
+        <ion-label>
+          Acepto los <a (click)="presentTermsAndConditions()">Términos y Condiciones.</a>
+        </ion-label>
+      </div>
+    </ion-item>
+    <ion-item *ngIf="pack" lines="none" class="ion-text-center">
+      <ion-label>
+        <h2 style="text-align: center;font-size: 20px;" *ngIf="totalAmount && !isInvalidCode">Total a pagar: <span
+            style="color: var(--ion-color-dark);">${{this.totalAmount}}</span></h2>
+        <p style="color: var(--ion-color-danger);" *ngIf="isInvalidCode">El código promocional entrado no es válido.</p>
+      </ion-label>
+    </ion-item>
+    <!-- <ion-item lines="none">
+      <div class="center-button">
+        <ion-button [disabled]="!currentUser || !pack || isInvalidCode || !acceptTerms" (click)="pay()" color="primary"
+          shape="round">
+          Pagar
+        </ion-button>
+      </div>
+    </ion-item> -->
+
+  </div>
+  <ion-item lines="none" class="ion-padding-horizontal">
+    <div class="center-button">
+      <div id="paypal-button"></div>
+    </div>
+  </ion-item>
+  <ion-item *ngIf="expired" lines="none" class="ion-padding-top">
+    <ion-text color="danger">
+      Su tiempo de prueba o su pago ha expirado. Debe comprar un plan para poder seguir usando CantoApp.
+    </ion-text>
+  </ion-item>
+  <ion-item
+    *ngIf="currentUser && (currentUser.lastPayment.frequency === 12 && currentUser.lastPayment.plan.type === PLAN_TYPES.premium)"
+    lines="none" class="ion-padding-top">
+    <ion-text color="primary">
+      Usted ya tiene el mejor plan que se puede adquirir.
+    </ion-text>
+  </ion-item>
+</ion-content>

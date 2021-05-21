@@ -1,0 +1,28 @@
+ion-footer {
+  ion-buttons {
+    ion-button {
+      width: 48%;
+    }
+  }
+}
+
+ion-content {
+  ion-img {
+    padding: 50px 10% 120px;
+  }
+
+  h1 {
+    font-size: 30px;
+    font-weight: 600;
+  }
+
+  ion-item {
+    ion-button {
+      --padding-start: 20px;
+      --padding-end: 20px;
+      --padding-bottom: 10px;
+      --padding-top: 10px;
+      height: auto;
+    }
+  }
+}

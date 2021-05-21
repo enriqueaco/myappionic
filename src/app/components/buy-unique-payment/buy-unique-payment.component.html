@@ -1,0 +1,30 @@
+<ion-content>
+  <ion-item lines="none">
+    <ion-text style="width: 100%;">
+      <h2>Comprar acceso a descargas</h2>
+      <p style="margin-bottom: 0;"><b>Vigencia: </b>{{api.settings[SETTINGS_TYPES.uniquePaymentPeriod]}}
+        {{api.settings[SETTINGS_TYPES.uniquePaymentPeriod] > 1 ? 'meses' : 'mes'}}.</p>
+      <p style="margin: 0 0 0 16px;"><b>Precio: </b>
+        <ion-badge class="price" color="medium">${{api.settings[SETTINGS_TYPES.uniquePaymentPrice].toFixed(2)}}
+        </ion-badge>
+      </p>
+    </ion-text>
+  </ion-item>
+  <!-- <ion-item lines="none" style="margin: 10px 0;">
+    <div class="center-button">
+      <ion-buttons>
+        <ion-button (click)="cancel()" class="clear-button" color="primary" shape="round">
+          Cancelar
+        </ion-button>
+        <ion-button (click)="pay()" class="clear-button" fill="solid" color="primary" shape="round">
+          Pagar
+        </ion-button>
+      </ion-buttons>
+    </div>
+  </ion-item> -->
+  <ion-item lines="none" class="ion-padding-top ion-padding-horizontal">
+    <div class="center-button">
+      <div id="paypal-button"></div>
+    </div>
+  </ion-item>
+</ion-content>

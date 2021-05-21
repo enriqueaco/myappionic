@@ -1,0 +1,12 @@
+ion-content {
+  ion-item {
+    ion-avatar {
+      display: flex;
+      img {
+        border-radius: 0;
+        margin: auto;
+        height: auto;
+      }
+    }
+  }
+}

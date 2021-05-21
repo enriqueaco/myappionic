@@ -1,0 +1,43 @@
+ion-content {
+  ion-item {
+    &.form-item {
+      --padding-start: 0;
+      --inner-padding-start: 0;
+      --padding-end: 0;
+      --inner-padding-end: 0;
+    }
+
+    ion-label {
+      text-align: center;
+
+      h2 {
+        font-size: 20px;
+        font-weight: 700;
+      }
+    }
+
+    &.item-has-focus,
+    &.item-has-value {
+      ion-label {
+        text-align: left;
+      }
+    }
+
+    ion-button {
+      &.button-normal {
+        --padding-start: 40px;
+        --padding-end: 40px;
+        --padding-bottom: 10px;
+        --padding-top: 10px;
+        height: auto;
+      }
+
+      &.button-end {
+        margin: 0;
+        position: absolute;
+        right: -12px;
+        z-index: 100;
+      }
+    }
+  }
+}

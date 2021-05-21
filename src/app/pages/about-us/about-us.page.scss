@@ -1,0 +1,56 @@
+ion-content {
+  ion-item {
+    --padding-start: 0;
+    --inner-padding-start: 0;
+
+    ion-label {
+      h2 {
+        font-size: 24px;
+        font-weight: 700;
+      }
+
+      p {
+        font-size: 16px;
+      }
+    }
+
+    ion-img {
+      width: 60%;
+      margin: auto;
+    }
+  }
+  .social-network {
+    width: 20px;
+    height: 20px;
+    margin-right: 3px;
+  }
+
+  ion-button {
+    --padding-start: 0;
+    --padding-inner-start: 0;
+    --padding-inner-end: 0;
+    --padding-end: 0;
+    height: 22px;
+    top: -6px;
+    position: relative;
+  }
+
+  ion-button.contact {
+    --padding-start: 40px;
+    --padding-end: 40px;
+    --padding-bottom: 10px;
+    --padding-top: 10px;
+    height: auto;
+  }
+
+  ion-grid{
+    margin-top: -15px;
+    margin-left: -10px;
+    z-index: 3;
+    position: relative;
+  }
+
+  .custom-padding {
+    padding-right: 5px;
+  }
+}

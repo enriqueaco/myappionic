@@ -1,0 +1,77 @@
+<ion-header mode="md">
+  <ion-toolbar mode="md" color="dark">
+    <ion-buttons slot="start">
+      <ion-back-button mode="md" defaultHref="home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>
+      <label>Acerca de</label>
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-text-center">
+  <ion-list *ngIf="settings" class="ion-padding-top">
+    <ion-item lines="none">
+      <ion-img src="assets/logo-orange.svg"></ion-img>
+    </ion-item>
+    <ion-item class="ion-text-center">
+      <ion-label color="dark">
+        <p>Versión {{localVersion}}</p>
+        <p *ngIf="localVersion < settings[SETTINGS_TYPES.lastVersion]" style="margin-bottom: 12px;"></p>
+
+          <!--<p *ngIf="localVersion < settings[SETTINGS_TYPES.lastVersion]" style="margin-bottom: 12px;">Esta versión expira
+          el <b>{{settings[SETTINGS_TYPES.expirationDayApp]}}</b></p>-->
+      </ion-label>
+    </ion-item>
+    <ion-item lines="none" class="ion-text-center">
+      <ion-label color="dark">
+        <h2>Colaboración de empresas</h2>
+      </ion-label>
+    </ion-item>
+    <ion-item lines="none" class="ion-text-center">
+      <ion-label color="dark">
+        <a (click)="open(settings[SETTINGS_TYPES.dosslLink])"><b>DOSSL</b></a> (Soluciones de software)
+      </ion-label>
+    </ion-item>
+    <ion-item lines="none" class="ion-text-center">
+      <ion-label color="dark">
+        <a (click)="open(settings[SETTINGS_TYPES.acrisoladaLink])"><b>Acrisolada</b></a> (Grupo de música
+        litúrgica)
+      </ion-label>
+    </ion-item>
+    <ion-grid>
+      <ion-row>
+        <ion-col class="ion-text-center">
+          <ion-label color="dark" class="custom-padding">Síguenos:</ion-label>
+          <ion-button fill="clear" (click)="open(settings[SETTINGS_TYPES.landpageLink])" size="small">
+            <ion-icon color="primary" name="globe" class="social-network"></ion-icon>
+          </ion-button>
+          <ion-button fill="clear" (click)="open(settings[SETTINGS_TYPES.socialNetworksLinkFace])" 
+            size="small">
+            <ion-icon color="primary" name="logo-facebook" class="social-network"></ion-icon>
+          </ion-button>
+          <ion-button fill="clear" (click)="open(settings[SETTINGS_TYPES.socialNetworksLinkTwit])" 
+            size="small">
+            <ion-icon color="primary" name="logo-twitter" class="social-network"></ion-icon>
+          </ion-button>
+          <ion-button fill="clear" (click)="open(settings[SETTINGS_TYPES.socialNetworksLinkYou])" size="small">
+            <ion-icon color="primary" name="logo-youtube" class="social-network"></ion-icon>
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    <ion-item lines="full" style="margin-top: -50px;"></ion-item>
+    <ion-item (click)="presentTermsAndConditions()" class="ion-text-center">
+      <ion-label color="dark">
+        <h2>Términos y condiciones</h2>
+      </ion-label>
+    </ion-item>
+    <ion-item lines="none" class="ion-padding-top">
+      <div class="center-button">
+        <ion-button [routerLink]="['/contact']" class="contact" color="primary" shape="round">
+          Contáctenos
+        </ion-button>
+      </div>
+    </ion-item>
+  </ion-list>
+</ion-content>

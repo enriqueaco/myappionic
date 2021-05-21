@@ -1,0 +1,28 @@
+<ion-header mode="md">
+  <ion-toolbar mode="md" color="dark">
+    <ion-buttons slot="start">
+      <ion-back-button mode="md" color="light" defaultHref="play-song"></ion-back-button>
+    </ion-buttons>
+    <ion-title>
+      <ion-label color="light">Partitura</ion-label>
+    </ion-title>
+    <ion-buttons slot="end">
+      <!-- <ion-button (click)="rotate()">
+        <ion-icon color="light" src="assets/rotate-smartphone.svg"></ion-icon>
+      </ion-button> -->
+      <ion-button [routerLink]="['/notifications']" class="notification-icon-button">
+        <ion-icon color="light" name="notifications"></ion-icon>
+        <ion-badge *ngIf="notificationsCount !== 0" class="notification-badge" color="danger">
+          <span>{{notificationsCount}}</span>
+        </ion-badge>
+      </ion-button>
+      <ion-menu-button color="light" size="small" autoHide="false" class="toggle"></ion-menu-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding" style="--background: var(--ion-color-dark)">
+  <ion-list style="background: var(--ion-color-dark)">
+    <ion-img *ngIf="path" [src]="path"></ion-img>
+  </ion-list>
+</ion-content>

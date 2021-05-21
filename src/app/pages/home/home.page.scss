@@ -1,0 +1,26 @@
+ion-content {
+  ion-button {
+    --box-shadow: none;
+    height: auto;
+    padding: 3px 30px;
+    --border-radius: 10px;
+    text-transform: none;
+
+    ion-label {
+      font-weight: 500;
+      font-size: 20px;
+    }
+
+    ion-grid {
+      padding: 10px;
+      ion-row {
+        ion-col {
+          padding: 2px;
+        }
+      }
+    }
+    span {
+      font-size: 12px;
+    }
+  }
+}

@@ -1,0 +1,30 @@
+<ion-header mode="md">
+  <ion-toolbar mode="md" color="dark">
+    <ion-title class="ion-text-center">
+      <img src="assets/logo-orange.svg" width="auto" alt="No Image" style="max-height: 48px;vertical-align: bottom" />
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-item lines="none" class="ion-text-center">
+    <img class="email-image" src="assets/email.svg" width="auto" alt="No Image" />
+  </ion-item>
+
+  <ion-item lines="none" color="dark" class="ion-text-center ion-padding-vertical message-bubble">
+    <ion-text>Chequee su correo y confirme su registro para continuar.</ion-text>
+  </ion-item>
+  <ion-item lines="none" class="ion-text-center ion-padding-top">
+    <div class="center-button">
+      <ion-button fill="outline" [disabled]="disabledResend" size="large" style="font-size: 16px;" color="warning" shape="round" (click)="resend()">
+        Reenviar Correo
+      </ion-button>
+    </div>
+  </ion-item>
+  <ion-item lines="none" class="ion-text-center">
+    <div class="center-button">
+      <ion-button [disabled]="!currentUser" size="large" style="font-size: 16px;" color="warning" shape="round" (click)="checking()">
+        Continuar
+      </ion-button>
+    </div>
+  </ion-item>
+</ion-content>

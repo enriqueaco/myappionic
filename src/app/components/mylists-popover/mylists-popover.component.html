@@ -1,0 +1,30 @@
+<ion-content class="ion-padding">
+  <ion-item lines="none" class="ion-text-center title-item">
+    <ion-label>
+      <h2>Adicionar canción a "Mis Listas"
+      </h2>
+      <p>Seleccione las listas donde desea adicionar la canción</p>
+    </ion-label>
+  </ion-item>
+  <ion-list *ngIf="lists">
+    <ion-item lines="full" *ngFor="let item of lists">
+      <ion-checkbox slot="start" [(ngModel)]="item.checked"></ion-checkbox>
+      <ion-label>
+        <h3>{{item.list.name}}</h3>
+        <p>{{item.list.totalSongs}} Canciones</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+  <ion-item lines="none" class="ion-padding-top">
+    <div class="center-button">
+      <ion-buttons>
+        <ion-button (click)="cancel()" class="clear-button" color="primary" shape="round">
+          Cancelar
+        </ion-button>
+        <ion-button (click)="confirm()" class="clear-button" fill="solid" color="primary" shape="round">
+          Adicionar
+        </ion-button>
+      </ion-buttons>
+    </div>
+  </ion-item>
+</ion-content>

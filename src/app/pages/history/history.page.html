@@ -1,0 +1,84 @@
+<ion-header mode="md">
+  <ion-toolbar mode="md" color="dark">
+    <ion-buttons slot="start">
+      <ion-back-button mode="md" color="light" defaultHref="home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>
+      <ion-label color="light">Historial de pagos</ion-label>
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button [routerLink]="['/notifications']" class="notification-icon-button">
+        <ion-icon color="light" name="notifications"></ion-icon>
+        <ion-badge *ngIf="notificationsCount !== 0" class="notification-badge" color="danger">
+          <span>{{notificationsCount}}</span>
+        </ion-badge>
+      </ion-button>
+      <ion-menu-button color="light" size="small" autoHide="false" class="toggle"></ion-menu-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="plan-content">
+  <ion-item lines="full" *ngFor="let item of payments">
+    <ion-text *ngIf="!item.isGift && item.type === PAYMENT_TYPES.regular">
+      <h2>Plan Comprado</h2>
+      <div>
+        <p>
+          Pagado:
+          <ion-badge class="custom-badge" color="medium" slot="end">
+            {{item.plan.name}} - ${{parsePrice(item.amount)}}
+          </ion-badge>
+          <ion-badge *ngIf="item.isUpgrade" style="margin-left: 3px;" class="custom-badge" color="primary" slot="end">
+            Mejorado
+          </ion-badge>
+        </p>
+        <p *ngIf="item.promoCode">
+          Descuento:
+          <ion-badge style="display: inline;font-size: 12px;padding: 3px;" color="danger" slot="end">
+            {{item.promoCode.percent}}%
+          </ion-badge>
+        </p>
+        <p>
+          Desde {{item.createdAt | date: "dd/MM/y" }} -
+          {{item.expirationDate  | date: "dd/MM/y" }}
+        </p>
+      </div>
+    </ion-text>
+    <ion-text *ngIf="item.type === PAYMENT_TYPES.unique">
+      <h2>Comprado acceso a descargas</h2>
+      <div>
+        <p>
+          Pagado:
+          <ion-badge class="custom-badge" color="medium" slot="end">
+            ${{parsePrice(item.amount)}}
+          </ion-badge>
+        </p>
+        <p>
+          Desde {{item.createdAt | date: "dd/MM/y" }} -
+          {{item.expirationDate  | date: "dd/MM/y" }}
+        </p>
+      </div>
+    </ion-text>
+    <ion-text *ngIf="item.isGift && item.type === PAYMENT_TYPES.regular">
+      <h2>Plan Regalado</h2>
+      <p>Nombre: {{item.givenTo.fullname}}</p>
+      <p>Correo: {{item.givenTo.email}}</p>
+      <p>
+        Pagado:
+        <ion-badge class="custom-badge" color="medium" slot="end">
+          {{item.plan.name}} - ${{parsePrice(item.amount)}}
+        </ion-badge>
+      </p>
+      <p *ngIf="item.promoCode">
+        Descuento:
+        <ion-badge style="display: inline;font-size: 12px;padding: 3px;" color="danger" slot="end">
+          {{item.promoCode.percent}}%
+        </ion-badge>
+      </p>
+      <p>
+        Desde {{item.createdAt | date: "dd/MM/y" }} -
+        {{item.expirationDate  | date: "dd/MM/y" }}
+      </p>
+    </ion-text>
+  </ion-item>
+</ion-content>

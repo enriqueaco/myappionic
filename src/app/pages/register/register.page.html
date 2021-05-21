@@ -1,0 +1,89 @@
+<ion-header mode="md">
+  <ion-toolbar mode="md" color="dark">
+    <ion-buttons slot="start">
+      <ion-back-button mode="md" defaultHref="home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>
+      <label>Registrarse</label>
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <form [formGroup]="registerForm">
+    <ion-item>
+      <ion-label position="floating">Nombre Completo</ion-label>
+      <ion-input inputmode="text" maxlength="100" formControlName="fullname" required></ion-input>
+    </ion-item>
+    <div class="validation-errors">
+      <ng-container *ngFor="let validation of validationMessages.fullname">
+        <div class="error-message"
+          *ngIf="registerForm.get('fullname').hasError(validation.type) && (registerForm.get('fullname').dirty || registerForm.get('fullname').touched)">
+          <ion-icon size="small" name="information-circle-outline"></ion-icon>
+          <p>{{ validation.message }}</p>
+        </div>
+      </ng-container>
+    </div>
+    <ion-item>
+      <ion-label position="floating">Correo</ion-label>
+      <ion-input inputmode="text" type="email" formControlName="email" required></ion-input>
+    </ion-item>
+    <div class="validation-errors">
+      <ng-container *ngFor="let validation of validationMessages.email">
+        <div class="error-message"
+          *ngIf="registerForm.get('email').hasError(validation.type) && (registerForm.get('email').dirty || registerForm.get('email').touched)">
+          <ion-icon size="small" name="information-circle-outline">
+            </ion-icon>
+            <p>{{ validation.message }}</p>
+        </div>
+      </ng-container>
+    </div>
+    <ion-item>
+      <ion-label position="floating">Contraseña</ion-label>
+      <ion-input  #passwordEyeRegister inputmode="text" maxlength="20" minlength="8" [type]="passwordTypeInput" (ionBlur)="checkPasswords()" formControlName="password" required></ion-input>
+      <button  item-end  class="btn_eye_icon"  (click)="togglePasswordMode()">
+        <ion-icon  [name]="iconPassword"></ion-icon>
+    </button>
+    </ion-item>
+    <div class="validation-errors">
+      <ng-container *ngFor="let validation of validationMessages.password">
+        <div class="error-message" *ngIf="registerForm.get('password').hasError(validation.type) 
+        && (registerForm.get('password').dirty || registerForm.get('password').touched)">
+          <ion-icon size="small" name="information-circle-outline">
+            </ion-icon>
+            <p>{{ validation.message }}</p>
+        </div>
+      </ng-container>
+    </div>
+    <ion-item>
+      <ion-label position="floating">Confirmar Contraseña</ion-label>
+      <ion-input  #confirmEyeRegister inputmode="text" maxlength="20" minlength="8" [type]="confirmTypeInput" (ionBlur)="checkPasswords()" formControlName="confirm" required></ion-input>
+      <button  item-end  class="btn_eye_icon"  (click)="toggleConfirmMode()">
+        <ion-icon  [name]="iconConfirm"></ion-icon>
+    </button>
+    </ion-item>
+    <div class="validation-errors">
+      <ng-container *ngFor="let validation of validationMessages.confirm">
+        <div class="error-message" *ngIf="registerForm.get('confirm').hasError(validation.type)
+         && (registerForm.get('confirm').dirty || registerForm.get('confirm').touched)">
+          <ion-icon size="small" name="information-circle-outline">
+            </ion-icon>
+            <p>{{ validation.message }}</p>
+        </div>
+      </ng-container>
+    </div>
+    <ion-item lines="none" class="ion-padding-top">
+      <div class="center-button">
+        <ion-button (click)="register()" [disabled]="!(isPasswordValid && registerForm.valid && uuid)"  color="primary" shape="round">
+          Crear Cuenta
+        </ion-button>
+      </div>
+    </ion-item>
+  </form>
+  <ion-item *ngIf="expired" lines="none" class="ion-padding-top">
+    <ion-text color="danger">
+      Su tiempo de prueba ha expirado. Debe registrarse y comprar un plan para poder seguir usando CantoApp.
+    </ion-text>
+  </ion-item>
+
+</ion-content>

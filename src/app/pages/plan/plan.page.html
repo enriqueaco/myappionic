@@ -1,0 +1,102 @@
+<ion-header mode="md">
+  <ion-toolbar mode="md" color="dark">
+    <ion-buttons slot="start">
+      <ion-back-button mode="md" color="light" defaultHref="home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>
+      <ion-label color="light">Plan</ion-label>
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button [routerLink]="['/notifications']" class="notification-icon-button">
+        <ion-icon color="light" name="notifications"></ion-icon>
+        <ion-badge *ngIf="notificationsCount !== 0" class="notification-badge" color="danger">
+          <span>{{notificationsCount}}</span>
+        </ion-badge>
+      </ion-button>
+      <ion-menu-button color="light" size="small" autoHide="false" class="toggle"></ion-menu-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="plan-content" *ngIf="currentUser">
+  <ion-item lines="full" [routerLink]="!isExpiredPayment ? ['/upgrade-plan'] : ['/buy-plan']">
+    <ion-text>
+      <h2>Comprar</h2>
+      <p *ngIf="isExpiredPayment">No tiene ningun plan.</p>
+      <hr *ngIf="isExpiredPayment">
+      <hr *ngIf="isExpiredPayment">
+      <div *ngIf="!isExpiredPayment">
+        <p>
+          Pagado:
+          <ion-badge class="custom-badge" color="medium" *ngIf="currentUser.lastPayment" slot="end">
+            {{currentUser.plan.name}} - ${{parsePrice(currentUser.lastPayment.amount)}}
+          </ion-badge>
+          <ion-badge *ngIf="currentUser.lastPayment && currentUser.lastPayment.isUpgrade" style="margin-left: 3px;" class="custom-badge" color="primary" slot="end">
+            Mejorado
+          </ion-badge>
+        </p>
+        <p *ngIf="currentUser.lastPayment && currentUser.lastPayment.promoCode">
+          Descuento:
+          <ion-badge style="display: inline;font-size: 12px;padding: 3px;" color="danger" *ngIf="currentUser.lastPayment.promoCode" slot="end">
+            {{currentUser.lastPayment.promoCode.percent}}%
+          </ion-badge>
+        </p>
+        <p *ngIf="currentUser.lastPayment && !currentUser.lastPayment.autoPay">
+          Desde {{currentUser.lastPayment.createdAt | date: "dd/MM/y" }} -
+          {{currentUser.lastPayment.expirationDate  | date: "dd/MM/y" }}
+        </p>
+        <p *ngIf="currentUser.lastPayment && currentUser.lastPayment.autoPay">
+          Próximo Pago: {{currentUser.lastPayment.expirationDate  | date: "dd/MM/y" }}
+        </p>
+        <p>
+          <ion-badge *ngIf="currentUser.lastPayment && currentUser.lastPayment.autoPay"  style="margin-left: 3px;"
+            class="custom-badge" color="primary" slot="end">
+            Autorrenovable
+          </ion-badge>
+        </p>
+        <!-- <p>Es autorrenovable cada 3 meses</p> -->
+        <!-- <hr *ngIf="!isExpiredPayment"> -->
+      </div>
+    </ion-text>
+  </ion-item>
+  <ion-item lines="full" (click)="openBuyUniquePlan($event)">
+    <ion-text>
+      <h2>Comprar acceso a descargas</h2>
+      <p *ngIf="isExpiredUniquePayment">
+        No tiene acceso a la sección de descargas para ello debe hacer un pago único
+        que tiene una vigencia de {{api.settings[SETTINGS_TYPES.uniquePaymentPeriod]}}
+        {{api.settings[SETTINGS_TYPES.uniquePaymentPeriod] > 1 ? 'meses' : 'mes'}}.</p>
+        <!-- <p>Precio: <ion-badge class="price" color="light">${{api.settings[SETTINGS_TYPES.uniquePaymentPrice].toFixed(2)}}</ion-badge></p> -->
+      <div *ngIf="!isExpiredUniquePayment">
+        <p>Usted tiene acceso a la sección de descargas.</p>
+        <p *ngIf="currentUser.uniquePayment" >
+          Pagado:
+          <ion-badge style="display: inline;font-size: 14px;padding: 3px;font-weight: 500;" color="medium" slot="end">
+            ${{parsePrice(currentUser.uniquePayment.amount)}}
+          </ion-badge>
+        </p>
+        <p *ngIf="currentUser.uniquePayment">Desde {{currentUser.uniquePayment.createdAt | date: "dd/MM/y" }} - {{currentUser.uniquePayment.expirationDate  | date: "dd/MM/y" }}</p>
+      </div>
+    </ion-text>
+  </ion-item>
+  <ion-item lines="full" (click)="openNext()">
+    <ion-text>
+      <h2>Regalar</h2>
+      <p *ngIf="!currentUser.pendingGift">Usted puede regalar un plan a cualquier persona de su interés. Un amigo, un familiar o cualquier otra persona
+        de su preferencia.</p>
+      <p *ngIf="currentUser.pendingGift">Nombre: {{currentUser.pendingGift.fullname}}</p>
+      <p *ngIf="currentUser.pendingGift">Correo: {{currentUser.pendingGift.to}}</p>
+      <p *ngIf="currentUser.pendingGift">
+        Estado: <ion-badge class="custom-badge" color="dark">{{getStatus(currentUser.pendingGift)}}</ion-badge>
+      </p>
+      <p></p>
+    </ion-text>
+  </ion-item>
+  <ion-item lines="full" (click)="cancelPlan()">
+    <ion-text>
+      <h2>Cancelar</h2>
+      <p>Usted puede cancelar su subcripción a un plan en cualquier momento. Para cualquier reclamación debe ponerse en contacto directo con CantoApp.</p>
+      <p></p>
+    </ion-text>
+  </ion-item>
+</ion-content>

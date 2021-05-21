@@ -1,0 +1,65 @@
+<ion-header mode="md">
+  <ion-toolbar mode="md" color="dark">
+    <ion-buttons slot="start">
+      <ion-back-button mode="md" defaultHref="home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>
+      <label>Mis Listas</label>
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button [routerLink]="['/notifications']" class="notification-icon-button">
+        <ion-icon color="light" name="notifications"></ion-icon>
+        <ion-badge *ngIf="notificationsCount !== 0" class="notification-badge" color="danger">
+          <span>{{notificationsCount}}</span>
+        </ion-badge>
+      </ion-button>
+      <ion-menu-button size="small" autoHide="false" class="toggle"></ion-menu-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list *ngIf="lists && lists.length > 0">
+    <ion-grid>
+      <ion-row *ngFor="let rows of lists">
+        <ion-col size="6" *ngFor="let item of rows">
+          <ion-card *ngIf="item">
+            <ion-button class="info-list" fill="clear" (click)="presentPopover($event, item)">
+              <ion-icon slot="icon-only" color="light" name="ellipsis-vertical"></ion-icon>
+            </ion-button>
+            <div (click)="openPlaylist(item)" class="image-container" style="background-color: #363c51">
+              <img src="assets/notamusical.svg" />
+            </div>
+            <ion-card-content>
+              <ion-item lines="none">
+                <ion-label>
+                  <h2>{{item.name}}</h2>
+                  <p>{{item.totalSongs}} canciones</p>
+                </ion-label>
+                <!-- <ion-button (click)="openPlaylist(item)" [disabled]="item.totalSongs === 0" size="large" fill="clear"
+                  slot="end">
+                  <ion-icon size="large" color="warning" name="play-circle"></ion-icon>
+                </ion-button> -->
+              </ion-item>
+              <!-- <ion-card-title>Misa de Bodas</ion-card-title> -->
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-list>
+</ion-content>
+<ion-footer>
+  <ion-toolbar mode="md">
+    <ion-buttons>
+      <ion-button [routerLink]="['/add-ownlist']" expand="full" fill="clear" color="dark">
+        <ion-icon slot="start" name="add-circle-outline"></ion-icon>
+        <strong>Nueva Lista</strong>
+      </ion-button>
+      <ion-button [routerLink]="['/search']" expand="full" fill="clear" color="dark">
+        <ion-icon slot="start" name="search"></ion-icon>
+        <strong>Búsqueda</strong>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>

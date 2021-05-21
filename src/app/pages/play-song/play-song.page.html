@@ -1,0 +1,133 @@
+<ion-header mode="md" *ngIf="status.activeTrack">
+  <ion-toolbar mode="md" style="--background: #{{status.activeTrack.iconBackground}} linear-gradient(rgba(0,0,0,.2), transparent);">
+    <ion-buttons slot="start">
+      <ion-back-button mode="md" color="light" defaultHref="playlist"></ion-back-button>
+    </ion-buttons>
+    <ion-title>
+      <ion-label color="light">{{status.title}}</ion-label>
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button [routerLink]="['/notifications']" class="notification-icon-button">
+        <ion-icon color="light" name="notifications"></ion-icon>
+        <ion-badge *ngIf="notificationsCount !== 0" class="notification-badge" color="danger">
+          <span>{{notificationsCount}}</span>
+        </ion-badge>
+      </ion-button>
+      <ion-menu-button color="light" size="small" autoHide="false" class="toggle"></ion-menu-button>
+    </ion-buttons>
+  </ion-toolbar>
+  <ion-toolbar mode="md">
+    <div *ngIf="!status.letter" class="image-container" [ngStyle]="{'background-color':'#' + status.activeTrack.iconBackground}">
+      <img [src]="URL_BASE + status.activeTrack.icon" />
+    </div>
+    <ion-item lines="none" *ngIf="status.letter" class="ion-text-center letter-container"  style="--background: #{{status.activeTrack.iconBackground}}">
+      <ion-text color="light" style="width: 100%;">
+        <p *ngFor="let item of status.activeTrack.letter.split('\n')">
+          {{item}}
+        </p>
+      </ion-text>
+    </ion-item>
+  </ion-toolbar>
+  <ion-toolbar class="menu-buttons" mode="md" style="--background: #{{status.activeTrack.iconBackground}}">
+    <ion-label class="voz" position="inline" color="light">voz</ion-label>
+    <ion-toggle [disabled]="!status.hasBackground || !status.isPremiumPlan" id="mic-toggle" color="light" (ionChange)="toggleVoice($event)"
+      [(ngModel)]="!status.playBackground"></ion-toggle>
+    <ion-button *ngIf="!status.replay" (click)="toggleReplay()" slot="end" class="info-list" fill="clear">
+      <ion-icon slot="icon-only" color="light" name="repeat-outline"></ion-icon>
+    </ion-button>
+    <ion-button *ngIf="status.replay" (click)="toggleReplay()" slot="end" class="info-list" fill="clear">
+      <ion-icon slot="icon-only" color="warning" name="repeat-outline"></ion-icon>
+    </ion-button>
+    <ion-button *ngIf="!status.random" (click)="toggleRandom()" slot="end" class="info-list" fill="clear">
+      <ion-icon slot="icon-only" color="light" name="shuffle-outline"></ion-icon>
+    </ion-button>
+    <ion-button *ngIf="status.random" (click)="toggleRandom()" slot="end" class="info-list" fill="clear">
+      <ion-icon slot="icon-only" color="warning" name="shuffle-outline"></ion-icon>
+    </ion-button>
+
+    <ion-button [disabled]="!status.activeTrack" slot="end" (click)="mute()" class="info-list" fill="clear">
+      <ion-icon slot="icon-only" color="light" [name]="status.mute ? 'volume-mute-outline' : 'volume-high-outline'"></ion-icon>
+    </ion-button>
+    <ion-range [value]="status.player ? (status.player.volume() * 100) : 1" debounce="500"
+      (ionChange)="changeVolume($event)" slot="end" vertical="true" debounce="500" mode="ios" color="warning">
+    </ion-range>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-item lines="none" class="ion-text-center ion-padding-bottom item-info">
+    <ion-label color="#000">
+      <p style="margin-bottom: 5px;">{{status.activeTrack.author}}</p>
+      <h3 style="font-size: 20px;">{{status.activeTrack.fullname}}</h3>
+      <p style="font-size: 11px;">{{status.activeTrack.description}}</p>
+    </ion-label>
+  </ion-item>
+  <ion-item lines="none">
+    <div class="center-button">
+      <ion-buttons>
+        <ion-button size="large" [disabled]="status.activeTrack.path == null" fill="clear" (click)="prev()"
+          color="dark">
+          <ion-icon slot="icon-only" name="play-skip-back-sharp"></ion-icon>
+        </ion-button>
+
+        <ion-button class="play-pause-button" [disabled]="status.activeTrack.path == null" fill="clear"
+          (click)="togglePlayer(false)" *ngIf="!status.isPlaying" color="warning">
+          <ion-icon slot="icon-only" name="play-circle-sharp"></ion-icon>
+        </ion-button>
+
+        <ion-button class="play-pause-button" [disabled]="status.activeTrack.path == null" fill="clear"
+          (click)="togglePlayer(true)" *ngIf="status.isPlaying" color="warning">
+          <ion-icon slot="icon-only" name="pause-circle-sharp"></ion-icon>
+        </ion-button>
+
+        <ion-button size="large" [disabled]="status.activeTrack.path == null" fill="clear" (click)="next()"
+          color="dark">
+          <ion-icon slot="icon-only" name="play-skip-forward-sharp"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </div>
+  </ion-item>
+  <ion-grid>
+    <ion-row>
+      <ion-col size="2" class="time-col ion-text-end">
+        <ion-label class="label-time" [innerHTML]="parseTime(status.seekTime)"></ion-label>
+      </ion-col>
+      <ion-col size="8">
+        <ion-range [disabled]="status.activeTrack.path == null" #range mode="ios" [(ngModel)]="status.progress" max="100" min="0"
+          color="warning" (touchend)="seek()" (mouseup)="seek()" (touchstart)="stopUpdate()" (mousedown)="stopUpdate()"
+          (ionChange)="updateProgessTime()" class="only-line">
+        </ion-range>
+      </ion-col>
+      <ion-col size="2" class="time-col">
+        <ion-label class="label-time" [innerHTML]="parseTime(status.duration)"></ion-label>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-item lines="none">
+    <div class="center-button">
+      <ion-buttons>
+        <ion-button size="large" (click)="presentMyListPopover($event, status.activeTrack)" [disabled]="status.activeTrack.path == null || !currentUser" fill="clear"
+          color="dark">
+          <ion-icon slot="icon-only" name="heart-outline"></ion-icon>
+        </ion-button>
+        <ion-button (click)="preloadSong(status.activeTrack)" size="large" [disabled]="status.activeTrack.path == null" fill="clear"
+          >
+          <ion-icon [color]="preloadList[status.activeTrack._id] ? 'primary' : 'dark'" slot="icon-only" name="download-outline"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </div>
+  </ion-item>
+</ion-content>
+<ion-footer>
+  <ion-toolbar mode="md">
+    <ion-buttons>
+      <ion-button [disabled]="!(status.activeTrack && status.activeTrack.letter)" (click)="toggleLetter()" expand="full" fill="clear" [color]="status.letter ? 'warning' : 'dark'">
+        <ion-icon slot="start" name="language-outline"></ion-icon>
+        <strong>Letra</strong>
+      </ion-button>
+      <ion-button [disabled]="!(status.activeTrack && status.activeTrack.musicSheet)" (click)="openMusicSheet(status.activeTrack.musicSheet)" expand="full" fill="clear" color="dark">
+        <ion-icon slot="start" name="musical-notes-outline"></ion-icon>
+        <strong>Partitura</strong>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>

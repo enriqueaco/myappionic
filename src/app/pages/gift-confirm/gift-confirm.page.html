@@ -1,0 +1,51 @@
+<ion-header mode="md">
+  <ion-toolbar mode="md" color="dark">
+    <ion-buttons slot="start">
+      <ion-button class="button-back" size="large" [routerLink]="['/plan']">
+        <ion-icon mode="md" name="arrow-back-sharp"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>
+      <ion-label color="light">Regalar</ion-label>
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-menu-button color="light" size="small" autoHide="false" class="toggle"></ion-menu-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content>
+  <ion-item lines="none">
+    <ion-label color="primary" style="margin-bottom: -10px;">
+      <h2>Beneficiario</h2>
+    </ion-label>
+  </ion-item>
+  <ion-item lines="full" *ngIf="currentUser && currentUser.pendingGift">
+    <ion-label color="dark">
+      <p>{{currentUser.pendingGift.fullname}}</p>
+      <p>{{currentUser.pendingGift.to}}</p>
+    </ion-label>
+    <ion-button (click)="refresh()" fill="clear" size="large">
+      <ion-icon color="dark" name="refresh"></ion-icon>
+    </ion-button>
+  </ion-item>
+  <ion-item lines="none">
+    <ion-text color="dark">
+      <p>Indique al beneficiario que abra su correo y proceda con la verificación, esto podrá hacerlo en los próximos 7 días</p>
+      <p>Hasta que el beneficiario no confirme su correo, usted no podrá proceder a pagar el plan.</p>
+    </ion-text>
+  </ion-item>
+  <ion-item lines="none" style="margin: 10px 0;">
+    <div class="center-button">
+      <ion-buttons>
+        <ion-button (click)="cancel()" class="clear-button" color="primary" shape="round">
+          Cancelar
+        </ion-button>
+        <ion-button [routerLink]="['/gift-pay']" style="margin-left: 20px;" [disabled]="!(status && status === GIFT_STATUS.pendingPay)" (click)="next()" class="clear-button" fill="solid" color="primary" shape="round">
+          Continuar
+        </ion-button>
+      </ion-buttons>
+    </div>
+  </ion-item>
+</ion-content>

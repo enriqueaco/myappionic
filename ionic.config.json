@@ -1,0 +1,7 @@
+{
+  "name": "refact-cantoapp",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "angular"
+}

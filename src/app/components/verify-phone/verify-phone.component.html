@@ -1,0 +1,24 @@
+<ion-content class="ion-padding">
+  <ion-item lines="none">
+    <ion-text>
+      Su cuenta está anclada a otro dispositivo móvil. Si desea acceder desde este nuevo dispositivo debe introducir el
+      código de verificación que se envió a su correo.
+    </ion-text>
+  </ion-item>
+  <ion-item class="ion-padding-top">
+    <ion-label position="floating">Código de verificación</ion-label>
+    <ion-input [(ngModel)]="confirmCode"></ion-input>
+  </ion-item>
+  <ion-item lines="none" class="ion-padding-top">
+    <div class="center-button">
+      <ion-buttons>
+        <ion-button (click)="cancel()" class="clear-button" color="primary" shape="round">
+          Cancelar
+        </ion-button>
+        <ion-button (click)="confirm()" class="clear-button" fill="solid" color="primary" shape="round">
+          Iniciar
+        </ion-button>
+      </ion-buttons>
+    </div>
+  </ion-item>
+</ion-content>

@@ -1,0 +1,31 @@
+ion-content {
+  ion-item {
+    ion-label {
+      text-align: center;
+    }
+
+    &.item-has-focus,
+    &.item-has-value {
+      ion-label {
+        text-align: left;
+      }
+    }
+
+    ion-button {
+      --padding-start: 40px;
+      --padding-end: 40px;
+      --padding-bottom: 10px;
+      --padding-top: 10px;
+      height: auto;
+    }
+
+    ion-button {
+      &.clear-button {
+        --padding-start: 20px;
+        --padding-end: 20px;
+        --padding-bottom: 0;
+        --padding-top: 0;
+      }
+    }
+  }
+}

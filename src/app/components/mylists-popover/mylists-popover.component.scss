@@ -1,0 +1,19 @@
+ion-content {
+  ion-item {
+    &.title-item {
+      --padding-end: 0;
+      --padding-start: 0;
+      --inner-padding-end: 0;
+      --inner-padding-start: 0;
+    }
+
+    ion-label {
+      h2 {
+        font-size: 18px;
+      }
+      p {
+        font-size: 11px;
+      }
+    }
+  }
+}

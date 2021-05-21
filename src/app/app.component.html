@@ -1,0 +1,94 @@
+<ion-app>
+  <ion-menu side="end" menuId="first" contentId="content1">
+    <ion-header mode="md" class="ion-no-border">
+      <ion-toolbar mode="md" class="ion-padding-top">
+        <ion-title class="ion-text-center">
+          <img src="assets/logo-menu.svg" height="100px" width="100px" alt="No Image"
+            style="vertical-align: bottom;" />
+        </ion-title>
+        <ion-item *ngIf="currentUser" lines="none" class="ion-text-center ion-padding-vertical">
+          <ion-label><strong>{{currentUser.fullname}}</strong></ion-label>
+          <p class="status-connection"><i class="online"></i> <span>Online</span></p>
+        </ion-item>
+        <ion-menu-toggle *ngIf="!currentUser">
+          <ion-item lines="none" class="ion-text-center ion-padding-top">
+            <div class="center-button">
+              <ion-button size="large" [routerLink]="['/login']" expand="full" fill="clear" color="dark">
+                <ion-icon slot="start" name="log-in-outline"></ion-icon>
+                <strong>Autenticarse</strong>
+              </ion-button>
+            </div>
+          </ion-item>
+        </ion-menu-toggle>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content color="warning">
+      <ion-list mode="ios" lines="none">
+        <ion-menu-toggle>
+          <ion-item class="ion-text-center" mode="md" [routerLink]="['/', 'home']" color="warning">
+            <ion-label>Inicio</ion-label>
+          </ion-item>
+        </ion-menu-toggle>
+        <ion-menu-toggle *ngIf="currentUser">
+          <ion-item class="ion-text-center" mode="md" [routerLink]="['/', 'profile']" color="warning">
+            <ion-label>Perfil</ion-label>
+          </ion-item>
+        </ion-menu-toggle>
+        <ion-menu-toggle *ngIf="currentUser">
+          <ion-item class="ion-text-center" mode="md" [routerLink]="['/', 'history']" color="warning">
+            <ion-label>Historial</ion-label>
+          </ion-item>
+        </ion-menu-toggle>
+        <ion-menu-toggle *ngIf="currentUser">
+          <ion-item class="ion-text-center" mode="md" [routerLink]="['/', 'own-lists']" color="warning">
+            <ion-label>Mis Listas</ion-label>
+          </ion-item>
+        </ion-menu-toggle>
+        <ion-menu-toggle>
+          <ion-item class="ion-text-center" mode="md" [routerLink]="['/', 'preload-list']" color="warning">
+            <ion-label>Precarga</ion-label>
+          </ion-item>
+        </ion-menu-toggle>
+        <ion-menu-toggle *ngIf="currentUser">
+          <ion-item class="ion-text-center" mode="md" [routerLink]="['/', 'plan']" color="warning">
+            <ion-label>Plan</ion-label>
+          </ion-item>
+        </ion-menu-toggle>
+        <ion-menu-toggle>
+          <ion-item class="ion-text-center" mode="md" [routerLink]="['/', 'notifications']" color="warning">
+            <ion-label>Notificaciones</ion-label>
+            <ion-badge *ngIf="notificationCount > 0" color="light" mode="ios" style="left: -52px;position: relative;">{{notificationCount}}</ion-badge>
+          </ion-item>
+        </ion-menu-toggle>
+        <ion-menu-toggle>
+          <ion-item class="ion-text-center" mode="md" [routerLink]="['/', 'contact']" color="warning">
+            <ion-label>Contacto</ion-label>
+          </ion-item>
+        </ion-menu-toggle>
+        <ion-menu-toggle>
+          <ion-item class="ion-text-center" mode="md" (click)="checkAccessDownloads()" color="warning">
+            <ion-label>Descargas</ion-label>
+          </ion-item>
+        </ion-menu-toggle>
+        <ion-menu-toggle>
+          <ion-item class="ion-text-center" mode="md" [routerLink]="['/', 'about-us']" color="warning">
+            <ion-label>Acerca de</ion-label>
+          </ion-item>
+        </ion-menu-toggle>
+        
+      </ion-list>
+      
+    </ion-content>
+    <ion-footer mode="ios" *ngIf="currentUser">
+      <ion-toolbar color="primary" style="--border-width: 0;">
+        <ion-menu-toggle class="logout-button">
+          <ion-item (click)="auth.signOut()" class="ion-text-center" mode="md" color="warning">
+            <ion-icon size="small" color="light" name="power"></ion-icon>
+            <ion-label>Salir</ion-label>
+          </ion-item>
+        </ion-menu-toggle>
+      </ion-toolbar>
+    </ion-footer>
+  </ion-menu>
+  <ion-router-outlet id="content1"></ion-router-outlet>
+</ion-app>

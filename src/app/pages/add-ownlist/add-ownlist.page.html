@@ -1,0 +1,25 @@
+<ion-header mode="md">
+  <ion-toolbar mode="md" color="dark">
+    <ion-buttons slot="start">
+      <ion-back-button mode="md" defaultHref="home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>
+      <label>Nueva Lista</label>
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-item>
+    <ion-label position="floating">Nombre</ion-label>
+    <ion-input [(ngModel)]="name" inputmode="text" maxlength="100" required></ion-input>
+  </ion-item>
+
+  <ion-item lines="none" class="ion-padding-top">
+    <div class="center-button">
+      <ion-button (click)="add()" [disabled]="!name" type="submit" color="primary" shape="round">
+        Crear
+      </ion-button>
+    </div>
+  </ion-item>
+</ion-content>
